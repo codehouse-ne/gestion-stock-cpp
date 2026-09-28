@@ -1,0 +1,16 @@
+# Build
+build/
+build-*/
+out/
+
+# IDE
+.vscode/
+.idea/
+*.user
+compile_commands.json
+
+# Compilateurs / OS
+*.o
+*.obj
+*.exe
+.DS_Store
