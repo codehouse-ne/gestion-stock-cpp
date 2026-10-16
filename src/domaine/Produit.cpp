@@ -11,7 +11,7 @@ Produit::Produit(std::string id, std::string nom, std::string categorie,
       seuilCritique_(seuilCritique),
       prixUnitaire_(prixUnitaire) {
     if (id_.empty() || nom_.empty()) {
-        throw QuantiteInvalideException("L'identifiant et le nom sont obligatoires");
+        throw ArgumentInvalideException("L'identifiant et le nom sont obligatoires");
     }
     if (quantite_ < 0 || seuilCritique_ < 0) {
         throw QuantiteInvalideException("Quantite et seuil critique doivent etre >= 0");
