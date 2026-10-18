@@ -39,3 +39,9 @@ struct ErreurPersistanceException : StockException {
     explicit ErreurPersistanceException(const std::string& message)
         : StockException(message) {}
 };
+// Argument manquant ou mal formé (ex. identifiant ou nom vide).
+// Different de QuantiteInvalideException : ici le probleme n'est pas une
+// quantite, c'est un champ obligatoire absent ou invalide.
+struct ArgumentInvalideException : StockException {
+    explicit ArgumentInvalideException(const std::string& message) : StockException(message) {}
+};

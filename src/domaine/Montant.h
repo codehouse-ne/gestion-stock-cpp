@@ -21,7 +21,7 @@ public:
         return Montant(francs_ + autre.francs_); // addition d'entiers : exacte
     }
 
-    Montant operator*(int facteur) const {
+    Montant operator*(std::int64_t facteur) const {
         if (facteur < 0) {
             throw QuantiteInvalideException("Facteur negatif interdit");
         }
