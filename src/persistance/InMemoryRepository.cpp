@@ -4,8 +4,8 @@
 std::vector<Enregistrement> InMemoryRepository::chargerTout(){
     return produits_;
 }
-void InMemoryRepository::sauvegarderTout(const std::vector<Enregistrement>& enregisyrements){
-     produits_ = enregisyrements;
+void InMemoryRepository::sauvegarderTout(const std::vector<Enregistrement>& enregistrements){
+     produits_ = enregistrements;
 }
 
 void InMemoryRepository::ajouter(const MouvementStock& mouvement){
