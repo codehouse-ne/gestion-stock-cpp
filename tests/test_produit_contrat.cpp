@@ -164,11 +164,12 @@ TEST_CASE("Produit : Sérialisation en Enregistrement", "[Produit][Serialisation
     auto e = p.versEnregistrement();
 
     SECTION("Les champs communs sont sérialisés") {
-        REQUIRE(e.champs.count("id") == 1);
-        REQUIRE(e.champs.at("id") == "P001");
-        REQUIRE(e.champs.at("nom") == "Lait");
-        REQUIRE(e.champs.at("quantite") == "10");
-        REQUIRE(e.champs.at("seuilCritique") == "5");
-        REQUIRE(e.champs.at("prixUnitaire") == "100");
+    REQUIRE(e.champs.count("id") == 1);
+    REQUIRE(e.champs.at("id") == "P001");
+    REQUIRE(e.champs.at("nom") == "Lait");
+    REQUIRE(e.champs.at("quantite") == "10");
+    REQUIRE(e.champs.at("seuil_critique") == "5");
+    REQUIRE(e.champs.at("prix_unitaire_francs") == "100");
+
     }
 }
