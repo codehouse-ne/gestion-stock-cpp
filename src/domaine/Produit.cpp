@@ -50,6 +50,6 @@ void Produit::remplirChampsCommuns(Enregistrement& e) const {
     e.champs["nom"] = nom_;
     e.champs["categorie"] = categorie_;
     e.champs["quantite"] = std::to_string(quantite_);
-    e.champs["seuilCritique"] = std::to_string(seuilCritique_);
-    e.champs["prixUnitaire"] = std::to_string(prixUnitaire_.valeur());
+    e.champs["seuil_critique"] = std::to_string(seuilCritique_);
+    e.champs["prix_unitaire_francs"] = std::to_string(prixUnitaire_.valeur());
 }
