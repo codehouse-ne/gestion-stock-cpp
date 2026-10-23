@@ -18,7 +18,7 @@ Enregistrement ProduitPerissable::versEnregistrement() const {
     Enregistrement e;
     e.type = "perissable";
 
-    //On réutilise la méthode de la classe parente poiur les 6 champs communs : 
+    //On réutilise la méthode de la classe parente pour les 6 champs communs : 
     //id, nom, categorie, quantite, seuilCritique, prix_unitaire_francs
     remplirChampsCommuns(e);
 
