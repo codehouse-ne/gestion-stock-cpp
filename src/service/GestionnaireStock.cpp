@@ -64,7 +64,7 @@ if(quantite > produit.quantite()){
     std::to_string(quantite) + ",disponible=" +std::to_string (produit.quantite()));
 }
 produit.retirerQuantite(quantite);
-tracer(id,"sortie",quantite,motif,auteur);
+tracer(id, "sortie", quantite, auteur, motif);
  }
 
 void GestionnaireStock::ajusterStock(const std::string& id, std::int64_t nouvelleQuantite,
