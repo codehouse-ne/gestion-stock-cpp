@@ -1,6 +1,5 @@
 #include "service/GestionnaireStock.h"
 #include <ctime>
-#include <stdexcept>
 #include <utility>
 #include <algorithm>
 #include <vector>
@@ -36,7 +35,7 @@ GestionnaireStock::GestionnaireStock(IProduitRepository& produitRepo,
 
    void GestionnaireStock::ajouterProduit(std::unique_ptr<Produit> produit){
     if(!produit){
-      throw std::invalid_argument("produit nul fourni à ajouterproduit");
+      throw ArgumentInvalideException("Produit nul fourni a ajouterProduit");
     }
     const std::string id = produit->id();
     if(produits_.find(id) != produits_.end()){
@@ -121,6 +120,26 @@ void GestionnaireStock::sauvegarder(){
     enregistrements.push_back(entree.second -> versEnregistrement());
   }
   produitRepo_.sauvegarderTout(enregistrements);
+}
+
+void GestionnaireStock::charger() {
+    const auto fiches = produitRepo_.chargerTout();
+
+    // On construit d'abord une table temporaire : si une fiche est invalide,
+    // produits_ reste intact au lieu d'etre a moitie charge.
+    std::unordered_map<std::string, std::unique_ptr<Produit>> nouveaux;
+    for (const auto& fiche : fiches) {
+        auto produit = ProduitFactory::creer(fiche);
+        if (!produit) {
+            throw FormatFichierInvalideException("La fabrique n'a produit aucun produit");
+        }
+        const std::string id = produit->id();
+        if (nouveaux.find(id) != nouveaux.end()) {
+            throw FormatFichierInvalideException("Identifiant en double dans les donnees : " + id);
+        }
+        nouveaux[id] = std::move(produit);
+    }
+    produits_ = std::move(nouveaux);
 }
 
  

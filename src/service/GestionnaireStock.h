@@ -7,6 +7,7 @@
 #include "domaine/Exceptions.h"
 #include "domaine/Montant.h"
 #include "domaine/Produit.h"
+#include "domaine/ProduitFactory.h"
 #include "service/IMouvementRepository.h"
 #include "service/IProduitRepository.h"
 
@@ -52,6 +53,8 @@ public:
     [[nodiscard]] std::vector<MouvementStock> historique() const;
 
     void sauvegarder();
+    void charger();
+    
 
 private:
     // Retrouve un produit modifiable, ou leve ProduitIntrouvableException.
