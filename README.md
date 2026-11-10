@@ -15,7 +15,7 @@ Application console de gestion de stock développée en **C++17**, avec architec
 ##  Fonctionnalités par version
 
 
-| Version | Contenu                                                                                     | Statut   |
+| Version |        Contenu                                                                                     | Statut   |
 | ------- | ------------------------------------------------------------------------------------------- | -------- |
 | **V1**  | Produits (hiérarchie), montants, gestionnaire de stock, sauvegarde fichier texte            | en cours |
 | **V2**  | Mouvements de stock, journal en « ajout seul », recherches et filtres, menu console complet | à venir  |
