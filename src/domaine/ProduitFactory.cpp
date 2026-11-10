@@ -7,14 +7,14 @@
 
 /*Recontruit un produit depuis sa fiche neutre.
 Règles : 
-1. On vérifie l'existencce d'une eclé avec count() AVANT d'y accéder
+1. On vérifie l'existence d'une clé avec count() AVANT d'y accéder
     (map["clé"] créerait silencieusement une entrée vide).
 2. Toute erreur de FORMAT lève FormaFichierInvalideException (la fiche est mal formée).
 les erreurs METIER (date vide, garantie <=0) lèvées
     par les constructeurs des produits remontent telles quelles : elles 
     viennent du domaine, pas du fichier */
     std::unique_ptr<Produit> ProduitFactory::creer(const Enregistrement& e) {
-        // --- Champs communs : tous obliatooires ---
+        // --- Champs communs : tous obliatoires ---
         if (!e.champs.count("id") || !e.champs.count("nom") || !e.champs.count("categorie") ||
             !e.champs.count("quantite") || !e.champs.count("seuil_critique") || !e.champs.count("prix_unitaire_francs")) {
             throw FormatFichierInvalideException("Fiche produit mal formée : champs communs manquants (type'" + e.type + "')");
