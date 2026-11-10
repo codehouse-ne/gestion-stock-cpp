@@ -1,0 +1,33 @@
+name: Intégration Continue (CI)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Compilation & Tests Catch2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Récupération du code (Checkout)
+        uses: actions/checkout@v4
+
+      - name: 2. Installation des outils de compilation et dépendances
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake qt6-base-dev
+
+      - name: 3. Configuration CMake
+        run: |
+          cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug
+
+      - name: 4. Compilation (avec warnings stricts activés)
+        run: |
+          cmake --build build --parallel
+
+      - name: 5. Exécution de la suite de tests automatisés (Catch2)
+        run: |
+          ctest --test-dir build --output-on-failure
