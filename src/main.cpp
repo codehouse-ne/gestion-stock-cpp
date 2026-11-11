@@ -7,17 +7,11 @@
 #include "domaine/ProduitPerissable.h"
 #include "domaine/ProduitElectronique.h"
 
-int main(int argc, char* argv[]) {
-    QApplication app(argc, argv);
-
-    // Initialisation des repositories (en mémoire pour le moment)
-    InMemoryRepository produitRepo;
-    InMemoryRepository mouvementRepo;
-
-    // Orchestrateur du métier
-    GestionnaireStock gestionnaire(produitRepo, mouvementRepo);
-
-    // Initialisation du jeu de données fidèle à la maquette validée
+namespace {
+// Données de démonstration fidèles à la maquette validée.
+// Utile en phase de développement/démonstration pour valider les composants UI.
+// Sera remplacé par 'gestionnaire.charger()' dès que la persistance sur disque sera disponible.
+void initialiserDonneesDemo(GestionnaireStock& gestionnaire) {
     gestionnaire.ajouterProduit(std::make_unique<ProduitPerissable>(
         "P1", "Lait", "Alimentaire", 40, 10, Montant(750), "2026-12-31"
     ));
@@ -33,6 +27,21 @@ int main(int argc, char* argv[]) {
     gestionnaire.ajouterProduit(std::make_unique<ProduitPerissable>(
         "P4", "Savon", "Hygiène", 25, 5, Montant(350), "2028-01-01"
     ));
+}
+} // namespace
+
+int main(int argc, char* argv[]) {
+    QApplication app(argc, argv);
+
+    // Initialisation des repositories (en mémoire vive pour le moment)
+    InMemoryRepository produitRepo;
+    InMemoryRepository mouvementRepo;
+
+    // Orchestrateur du métier
+    GestionnaireStock gestionnaire(produitRepo, mouvementRepo);
+
+    // Chargement des données de test pour la démo visuelle
+    initialiserDonneesDemo(gestionnaire);
 
     // Lancement de l'interface graphique Qt6
     MainWindow fenetre(gestionnaire);
