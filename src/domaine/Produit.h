@@ -23,6 +23,7 @@ public:
     [[nodiscard]] Montant valeurStock() const;   // quantite * prix unitaire
     [[nodiscard]] const std::string& id() const noexcept { return id_; }
     [[nodiscard]] const std::string& nom() const noexcept { return nom_; }
+    [[nodiscard]] const std::string& categorie() const noexcept { return categorie_; }
     [[nodiscard]] std::int64_t quantite() const noexcept { return quantite_; }
     [[nodiscard]] bool sousSeuilCritique() const noexcept;
     [[nodiscard]] const Montant& prixUnitaire() const noexcept { return prixUnitaire_; }

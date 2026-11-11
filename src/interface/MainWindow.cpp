@@ -11,6 +11,7 @@
 #include <QSpinBox>
 #include <QStatusBar>
 #include <QFrame>
+#include <QLocale>
 
 #include "domaine/ProduitPerissable.h"
 #include "domaine/ProduitElectronique.h"
@@ -302,6 +303,10 @@ QWidget* MainWindow::creerBarreActions() {
 void MainWindow::rafraichir() {
     const auto produits = gestionnaire_.listerProduits();
     const QString filtre = champRecherche_ ? champRecherche_->text().trimmed().toLower() : "";
+    const QLocale localeFr(QLocale::French);
+    auto formaterMontant = [&localeFr](const Montant& m) -> QString {
+        return localeFr.toString(static_cast<qlonglong>(m.valeur())) + " FCFA";
+    };
 
     std::int64_t alertesCount = 0;
     tableauProduits_->setRowCount(0);
@@ -317,7 +322,8 @@ void MainWindow::rafraichir() {
 
         const QString nom = QString::fromStdString(p->nom());
         const QString id = QString::fromStdString(p->id());
-        if (!filtre.isEmpty() && !nom.toLower().contains(filtre) && !id.toLower().contains(filtre)) {
+        const QString categorie = QString::fromStdString(p->categorie());
+        if (!filtre.isEmpty() && !nom.toLower().contains(filtre) && !id.toLower().contains(filtre) && !categorie.toLower().contains(filtre)) {
             continue; // Filtré par la recherche
         }
 
@@ -326,11 +332,11 @@ void MainWindow::rafraichir() {
         auto* itemID = new QTableWidgetItem(id);
         itemID->setTextAlignment(Qt::AlignCenter);
         auto* itemNom = new QTableWidgetItem(nom);
-        auto* itemCat = new QTableWidgetItem("Général");
+        auto* itemCat = new QTableWidgetItem(categorie);
         auto* itemQte = new QTableWidgetItem(QString::number(p->quantite()));
         itemQte->setTextAlignment(Qt::AlignCenter);
-        auto* itemPrix = new QTableWidgetItem(QString::fromStdString(p->prixUnitaire().versTexte()));
-        auto* itemVal = new QTableWidgetItem(QString::fromStdString(p->valeurStock().versTexte()));
+        auto* itemPrix = new QTableWidgetItem(formaterMontant(p->prixUnitaire()));
+        auto* itemVal = new QTableWidgetItem(formaterMontant(p->valeurStock()));
 
         auto* itemEtat = new QTableWidgetItem(alerte ? "Sous le seuil" : "En stock");
         itemEtat->setTextAlignment(Qt::AlignCenter);
@@ -359,7 +365,7 @@ void MainWindow::rafraichir() {
     }
 
     // Mise à jour des cartes et étiquettes
-    const QString valeurTotaleTexte = QString::fromStdString(gestionnaire_.valeurTotale().versTexte());
+    const QString valeurTotaleTexte = formaterMontant(gestionnaire_.valeurTotale());
     etiquetteValeurTotale_->setText(valeurTotaleTexte);
     etiquetteNombreProduits_->setText(QString::number(produits.size()));
     etiquetteAlertesSeuil_->setText(QString::number(alertesCount));
