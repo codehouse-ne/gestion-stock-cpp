@@ -5,19 +5,21 @@
 
 #include <string>
 
-/*Recontruit un produit depuis sa fiche neutre.
+/*Reconstruit un produit depuis sa fiche neutre.
+
 Règles : 
 1. On vérifie l'existence d'une clé avec count() AVANT d'y accéder
     (map["clé"] créerait silencieusement une entrée vide).
-2. Toute erreur de FORMAT lève FormaFichierInvalideException (la fiche est mal formée).
-les erreurs METIER (date vide, garantie <=0) lèvées
+2. Toute erreur de FORMAT lève FormatFichierInvalideException (la fiche est mal formée).
+les erreurs METIER (date vide, garantie <= 0) levées
     par les constructeurs des produits remontent telles quelles : elles 
-    viennent du domaine, pas du fichier */
+    viennent du domaine, pas du fichier 
+*/
     std::unique_ptr<Produit> ProduitFactory::creer(const Enregistrement& e) {
-        // --- Champs communs : tous obliatoires ---
+        // --- Champs communs : tous obligatoires ---
         if (!e.champs.count("id") || !e.champs.count("nom") || !e.champs.count("categorie") ||
             !e.champs.count("quantite") || !e.champs.count("seuil_critique") || !e.champs.count("prix_unitaire_francs")) {
-            throw FormatFichierInvalideException("Fiche produit mal formée : champs communs manquants (type'" + e.type + "')");
+            throw FormatFichierInvalideException("Fiche produit mal formée : champs communs manquants (type '" + e.type + "')");
         }
 
         std::int64_t quantite;
@@ -28,8 +30,8 @@ les erreurs METIER (date vide, garantie <=0) lèvées
             seuilCritique = std::stoll(e.champs.at("seuil_critique"));
             prixFrancs = std::stoll(e.champs.at("prix_unitaire_francs"));
         } catch (const std::exception&) {
-            // stoll ecoue si ce n'est pas un nombre : c'est un problème de FORMAT du fichier, pas du domaine. On traduit l'erreur technique en erreur métier.
-            throw FormatFichierInvalideException("Nombre illissible dans l'enregistrement (type '" + e.type + "')");
+            // stoll echoue si ce n'est pas un nombre : c'est un problème de FORMAT du fichier, pas du domaine. On traduit l'erreur technique en erreur métier.
+            throw FormatFichierInvalideException("Nombre illisible dans l'enregistrement (type '" + e.type + "')");
         }
         Montant prixUnitaire(prixFrancs);
 
