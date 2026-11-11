@@ -1,35 +1,34 @@
 cmake_minimum_required(VERSION 3.16)
 project(gestion_stock LANGUAGES CXX)
 
-# --- Norme C++17 imposee ---
+# --- Norme C++17 imposée ---
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# --- Compilation stricte : les warnings aident a ne pas ecrire du code douteux ---
+# --- Support Qt6 : MOC, UIC, RCC automatiques ---
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
+
+# --- Compilation stricte : les warnings aident à ne pas écrire du code douteux ---
 add_compile_options(-Wall -Wextra -Wpedantic -Wshadow)
 
-# --- Bibliotheque "stock" : tout sauf main.cpp ---
+# --- Bibliothèque "stock" : cœur métier, service, persistance et interface ---
 file(GLOB_RECURSE STOCK_SOURCES CONFIGURE_DEPENDS src/*.cpp)
 list(REMOVE_ITEM STOCK_SOURCES ${CMAKE_SOURCE_DIR}/src/main.cpp)
 
-# Si la liste est VIDE (aucun .cpp metier pour l'instant), on doit quand meme
-# donner quelque chose a compiler a la bibliotheque. Solution : un fichier
-# .cpp "vide" de maintien que l'on supprimera a l'etape 1.
-if(NOT STOCK_SOURCES)
-    set(STOCK_SOURCES ${CMAKE_SOURCE_DIR}/src/persistance/vide.cpp)
-endif()
-
 add_library(stock ${STOCK_SOURCES})
 target_include_directories(stock PUBLIC src)
+target_link_libraries(stock PUBLIC Qt6::Widgets)
 
-
-
-# --- L'executable : juste la racine de composition ---
+# --- L'exécutable : racine de composition et lancement de l'application ---
 add_executable(gestion_stock src/main.cpp)
-target_link_libraries(gestion_stock PRIVATE stock)
+target_link_libraries(gestion_stock PRIVATE stock Qt6::Widgets)
 
-# --- Tests : Catch2 v3 telecharge automatiquement ---
+# --- Tests : Catch2 v3 téléchargé automatiquement ---
 option(STOCK_BUILD_TESTS "Construire les tests" ON)
 if(STOCK_BUILD_TESTS)
     enable_testing()
