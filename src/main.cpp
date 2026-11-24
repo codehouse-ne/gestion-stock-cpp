@@ -1,7 +1,11 @@
-#include <iostream>
-using namespace std;
+#include "interface/Menu.h"
+#include "persistance/InMemoryRepository.h"
+#include "service/GestionnaireStock.h"
 
 int main() {
-    cout << "Gestion de Stock - etape 0 : squelette operationnel\n";
+    InMemoryRepository repo;
+    GestionnaireStock gestionnaire(repo, repo);
+    Menu menu(gestionnaire);
+    menu.lancer();
     return 0;
 }
