@@ -10,7 +10,8 @@ public:
 
 private:
     void afficherMenu() const;
+    void listerProduits() const;
+    void ajouterProduit();
 
     GestionnaireStock& gestionnaire_;
-    void listerProduits() const;
 };
